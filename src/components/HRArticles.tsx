@@ -11,10 +11,33 @@ export default function HRArticles({ articles }: HRArticlesProps) {
   const [lastUpdated, setLastUpdated] = useState<string>('');
 
   useEffect(() => {
-    // 현재 시간을 한국 시간으로 설정
+    // 매일 오후 12:00에 업데이트되는 것처럼 표시
     const now = new Date();
     const koreanTime = new Date(now.getTime() + (9 * 60 * 60 * 1000)); // UTC+9
-    setLastUpdated(koreanTime.toLocaleString('ko-KR'));
+    
+    // 현재 한국 시간이 오후 12시 이전이면 전날 12시, 이후면 오늘 12시로 설정
+    const today = new Date(koreanTime.getFullYear(), koreanTime.getMonth(), koreanTime.getDate());
+    const todayNoon = new Date(today.getTime() + (12 * 60 * 60 * 1000)); // 오늘 오후 12:00
+    
+    let updateTime;
+    if (koreanTime < todayNoon) {
+      // 현재 시간이 오늘 오후 12시 이전이면 어제 오후 12시
+      const yesterday = new Date(today.getTime() - (24 * 60 * 60 * 1000));
+      updateTime = new Date(yesterday.getTime() + (12 * 60 * 60 * 1000));
+    } else {
+      // 현재 시간이 오늘 오후 12시 이후면 오늘 오후 12시
+      updateTime = todayNoon;
+    }
+    
+    setLastUpdated(updateTime.toLocaleString('ko-KR', {
+      year: 'numeric',
+      month: 'numeric', 
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true
+    }));
   }, []);
 
   const formatDate = (dateString: string) => {
@@ -47,7 +70,7 @@ export default function HRArticles({ articles }: HRArticlesProps) {
 
       <div className="mb-3 p-2 bg-blue-50 border border-blue-200 rounded">
         <p className="text-xs text-blue-800">
-          📚 매일 오후 12시에 업데이트되는 유니콘 기업의 HR 전략 관련 최신 기사들입니다.
+          📚 매일 오후 12:00에 업데이트되는 유니콘 기업의 HR 전략 관련 최신 기사들입니다.
         </p>
       </div>
 
