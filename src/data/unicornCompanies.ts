@@ -130,21 +130,21 @@ export const koreanUnicornCompanies: UnicornCompany[] = [
     name: '토스(비바리퍼블리카)',
     foundedYear: 2013,
     unicornDate: '2021-06-02',
-    currentEmployees: 2800,
+    currentEmployees: 1304,
     employeeHistory: [
       { year: 2013, employees: 4, source: '비바리퍼블리카 창업' },
       { year: 2014, employees: 12, source: '초기 핀테크 팀' },
       { year: 2015, employees: 25, source: '토스 서비스 개발' },
       { year: 2016, employees: 50, source: '토스 앱 정식 출시' },
       { year: 2017, employees: 100, source: '초기 핀테크 단계' },
-      { year: 2018, employees: 250, source: '토스 서비스 확장' },
-      { year: 2019, employees: 450, source: '시리즈 D 투자' },
-      { year: 2020, employees: 800, source: '토스뱅크 준비' },
-      { year: 2021, employees: 1200, source: '유니콘 달성' },
-      { year: 2022, employees: 1800, source: '토스뱅크 출범' },
-      { year: 2023, employees: 2300, source: '금융 서비스 확장' },
-      { year: 2024, employees: 2800, source: '현재 추정 인력' },
+      { year: 2018, employees: 180, source: '토스 서비스 확장' },
+      { year: 2019, employees: 180, source: '전 직원 스톡옵션 1억원 지급 시점' },
+      { year: 2020, employees: 400, source: '토스뱅크 준비 단계' },
+      { year: 2021, employees: 800, source: '유니콘 달성 및 급성장' },
+      { year: 2022, employees: 1100, source: '토스뱅크 출범 후' },
+      { year: 2023, employees: 1200, source: '금융 서비스 확장' },
+      { year: 2024, employees: 1304, source: '국민연금 공식 데이터 (2024.12 기준)' },
     ],
-    description: '종합 금융 플랫폼 및 인터넷 전문은행'
+    description: '종합 금융 플랫폼 및 인터넷 전문은행 (계열사 분리로 인한 인력 조정 반영)'
   }
 ]; 
