@@ -13,11 +13,13 @@ export default function HRArticles({ articles: initialArticles }: HRArticlesProp
   const [lastUpdated, setLastUpdated] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string>('');
+  const [isUsingFallback, setIsUsingFallback] = useState<boolean>(false);
 
   const loadArticles = useCallback(async () => {
     try {
       setIsLoading(true);
       setError('');
+      setIsUsingFallback(false);
       
       // 먼저 캐시된 데이터 확인
       const cachedArticles = getCachedArticles();
@@ -35,12 +37,23 @@ export default function HRArticles({ articles: initialArticles }: HRArticlesProp
         setArticles(freshArticles);
         cacheArticles(freshArticles); // 캐시에 저장
         updateLastUpdatedTime();
+        
+        // 기본 데이터를 사용하는지 확인 (첫 번째 기사의 날짜가 오늘인지 확인)
+        const today = new Date().toISOString().split('T')[0];
+        const isUsingDefault = freshArticles.some(article => 
+          article.publishedDate === today && 
+          article.title.includes("HR's New Role")
+        );
+        
+        if (isUsingDefault) {
+          setIsUsingFallback(true);
+        }
       } else {
         // API에서 데이터를 가져오지 못한 경우 기본 데이터 사용
         if (initialArticles && initialArticles.length > 0) {
           setArticles(initialArticles);
         }
-        setError('최신 기사를 불러오는 중 문제가 발생했습니다. 기본 데이터를 표시합니다.');
+        setIsUsingFallback(true);
       }
       
     } catch (err) {
@@ -51,6 +64,7 @@ export default function HRArticles({ articles: initialArticles }: HRArticlesProp
       if (initialArticles && initialArticles.length > 0) {
         setArticles(initialArticles);
       }
+      setIsUsingFallback(true);
     } finally {
       setIsLoading(false);
     }
@@ -137,6 +151,25 @@ export default function HRArticles({ articles: initialArticles }: HRArticlesProp
         </div>
       </div>
 
+      {/* 상태 메시지 */}
+      {isUsingFallback && (
+        <div className="mb-3 p-3 bg-blue-50 border border-blue-200 rounded">
+          <div className="flex items-start space-x-2">
+            <span className="text-blue-600 mt-0.5">ℹ️</span>
+            <div className="text-xs text-blue-800">
+              <p className="font-medium mb-1">큐레이션된 HR 인사이트를 표시하고 있습니다</p>
+              <p>
+                현재 Harvard Business Review, McKinsey & Company, MIT Sloan Management Review 등 
+                신뢰할 수 있는 출처의 엄선된 HR 전략 기사들을 보여드리고 있습니다.
+              </p>
+              <p className="mt-1 text-blue-600">
+                💡 실시간 업데이트를 원하시면 News API 키를 설정해주세요.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {error && (
         <div className="mb-3 p-2 bg-yellow-50 border border-yellow-200 rounded">
           <p className="text-xs text-yellow-800">
@@ -145,10 +178,11 @@ export default function HRArticles({ articles: initialArticles }: HRArticlesProp
         </div>
       )}
 
-      <div className="mb-3 p-2 bg-blue-50 border border-blue-200 rounded">
-        <p className="text-xs text-blue-800">
-          📚 실시간으로 수집되는 유니콘 기업의 HR 전략 관련 최신 기사들입니다. 
-          {isLoading && <span className="ml-1">🔄 업데이트 중...</span>}
+      <div className="mb-3 p-2 bg-gray-50 border border-gray-200 rounded">
+        <p className="text-xs text-gray-700">
+          📚 유니콘 기업의 HR 전략과 관련된 최신 인사이트를 제공합니다.
+          {isLoading && <span className="ml-1 text-blue-600">🔄 업데이트 중...</span>}
+          {!isUsingFallback && <span className="ml-1 text-green-600">✨ 실시간 업데이트</span>}
         </p>
       </div>
 
@@ -222,8 +256,8 @@ export default function HRArticles({ articles: initialArticles }: HRArticlesProp
                   </a>
                   
                   <div className="flex items-center space-x-1 text-xs text-gray-500">
-                    <span>📈</span>
-                    <span>실시간 업데이트</span>
+                    <span>{isUsingFallback ? '📋' : '📈'}</span>
+                    <span>{isUsingFallback ? '큐레이션' : '실시간 업데이트'}</span>
                   </div>
                 </div>
               </article>
@@ -231,14 +265,28 @@ export default function HRArticles({ articles: initialArticles }: HRArticlesProp
         </div>
       )}
 
-      <div className="mt-4 p-2 bg-gray-50 border border-gray-200 rounded">
-        <h3 className="font-semibold text-gray-800 mb-1 text-sm">실시간 업데이트 정보</h3>
-        <p className="text-xs text-gray-600">
-          이 섹션은 News API를 통해 실시간으로 HR 관련 최신 기사들을 수집합니다. 
-          Harvard Business Review, Wall Street Journal, Bloomberg 등 신뢰할 수 있는 출처에서 
-          HR 전략, 인재 관리, 조직 문화 등과 관련된 인사이트를 제공합니다.
-          {isLoading && <span className="ml-1 text-blue-600">🔄 현재 업데이트 중...</span>}
-        </p>
+      <div className="mt-4 p-3 bg-gray-50 border border-gray-200 rounded">
+        <h3 className="font-semibold text-gray-800 mb-2 text-sm">
+          {isUsingFallback ? '큐레이션된 HR 인사이트' : '실시간 업데이트 정보'}
+        </h3>
+        {isUsingFallback ? (
+          <div className="text-xs text-gray-600 space-y-1">
+            <p>
+              현재 Harvard Business Review, McKinsey & Company, MIT Sloan Management Review 등 
+              신뢰할 수 있는 출처의 엄선된 HR 전략 기사들을 표시하고 있습니다.
+            </p>
+            <p className="text-blue-600 font-medium">
+              💡 실시간 뉴스 업데이트를 원하시면 News API 키를 설정해주세요.
+            </p>
+          </div>
+        ) : (
+          <p className="text-xs text-gray-600">
+            이 섹션은 News API를 통해 실시간으로 HR 관련 최신 기사들을 수집합니다. 
+            Harvard Business Review, Wall Street Journal, Bloomberg 등 신뢰할 수 있는 출처에서 
+            HR 전략, 인재 관리, 조직 문화 등과 관련된 인사이트를 제공합니다.
+            {isLoading && <span className="ml-1 text-blue-600">🔄 현재 업데이트 중...</span>}
+          </p>
+        )}
       </div>
     </div>
   );
