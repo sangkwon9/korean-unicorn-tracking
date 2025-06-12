@@ -19,15 +19,15 @@ export default function UnicornTable({ companies }: UnicornTableProps) {
   };
 
   return (
-    <div className="h-full overflow-auto p-6">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">한국 유니콘 기업 인력 추이</h2>
+    <div className="h-full overflow-auto p-2">
+      <h2 className="text-xl font-bold mb-3 text-gray-800">한국 유니콘 기업 인력 추이</h2>
       
       {/* 기업 목록 */}
-      <div className="grid gap-4 mb-6">
+      <div className="grid gap-2 mb-3">
         {companies.map((company, index) => (
           <div
             key={index}
-            className={`p-4 border rounded-lg cursor-pointer transition-all duration-200 ${
+            className={`p-3 border rounded cursor-pointer transition-all duration-200 ${
               selectedCompany === company
                 ? 'border-blue-500 bg-blue-50'
                 : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
@@ -36,13 +36,13 @@ export default function UnicornTable({ companies }: UnicornTableProps) {
           >
             <div className="flex justify-between items-center">
               <div>
-                <h3 className="font-semibold text-lg text-gray-800">{company.name}</h3>
-                <p className="text-sm text-gray-600">{company.description}</p>
-                <p className="text-sm text-gray-500 mt-1">
+                <h3 className="font-semibold text-base text-gray-800">{company.name}</h3>
+                <p className="text-xs text-gray-600">{company.description}</p>
+                <p className="text-xs text-gray-500 mt-1">
                   유니콘 달성: {formatDate(company.unicornDate)} | 현재 인원: {formatNumber(company.currentEmployees)}명
                 </p>
               </div>
-              <div className="text-2xl text-gray-400">
+              <div className="text-xl text-gray-400">
                 {selectedCompany === company ? '−' : '+'}
               </div>
             </div>
@@ -52,19 +52,19 @@ export default function UnicornTable({ companies }: UnicornTableProps) {
 
       {/* 선택된 기업의 상세 정보 */}
       {selectedCompany && (
-        <div className="mt-6 p-6 bg-white border rounded-lg shadow-sm">
-          <h3 className="text-xl font-semibold mb-4 text-gray-800">
+        <div className="mt-3 p-3 bg-white border rounded shadow-sm">
+          <h3 className="text-lg font-semibold mb-3 text-gray-800">
             {selectedCompany.name} - 연도별 인력 변화
           </h3>
           
           <div className="overflow-x-auto">
-            <table className="w-full border-collapse">
+            <table className="w-full border-collapse text-sm">
               <thead>
                 <tr className="bg-gray-50">
-                  <th className="border border-gray-200 px-4 py-3 text-left font-semibold text-gray-700">연도</th>
-                  <th className="border border-gray-200 px-4 py-3 text-left font-semibold text-gray-700">직원 수</th>
-                  <th className="border border-gray-200 px-4 py-3 text-left font-semibold text-gray-700">전년 대비 증가율</th>
-                  <th className="border border-gray-200 px-4 py-3 text-left font-semibold text-gray-700">자료 출처</th>
+                  <th className="border border-gray-200 px-2 py-2 text-left font-semibold text-gray-700">연도</th>
+                  <th className="border border-gray-200 px-2 py-2 text-left font-semibold text-gray-700">직원 수</th>
+                  <th className="border border-gray-200 px-2 py-2 text-left font-semibold text-gray-700">증가율</th>
+                  <th className="border border-gray-200 px-2 py-2 text-left font-semibold text-gray-700">출처</th>
                 </tr>
               </thead>
               <tbody>
@@ -76,13 +76,13 @@ export default function UnicornTable({ companies }: UnicornTableProps) {
 
                   return (
                     <tr key={record.year} className="hover:bg-gray-50">
-                      <td className="border border-gray-200 px-4 py-3 font-medium text-gray-800">
+                      <td className="border border-gray-200 px-2 py-2 font-medium text-gray-800">
                         {record.year}년
                       </td>
-                      <td className="border border-gray-200 px-4 py-3 text-gray-700">
+                      <td className="border border-gray-200 px-2 py-2 text-gray-700">
                         {formatNumber(record.employees)}명
                       </td>
-                      <td className="border border-gray-200 px-4 py-3">
+                      <td className="border border-gray-200 px-2 py-2">
                         {growthRate ? (
                           <span className={`font-medium ${parseFloat(growthRate) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                             {parseFloat(growthRate) >= 0 ? '+' : ''}{growthRate}%
@@ -91,7 +91,7 @@ export default function UnicornTable({ companies }: UnicornTableProps) {
                           <span className="text-gray-400">-</span>
                         )}
                       </td>
-                      <td className="border border-gray-200 px-4 py-3 text-sm text-gray-600">
+                      <td className="border border-gray-200 px-2 py-2 text-xs text-gray-600">
                         {record.source}
                       </td>
                     </tr>
@@ -102,8 +102,8 @@ export default function UnicornTable({ companies }: UnicornTableProps) {
           </div>
 
           {/* 유니콘 달성 시점 하이라이트 */}
-          <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded">
-            <p className="text-sm text-yellow-800">
+          <div className="mt-3 p-2 bg-yellow-50 border border-yellow-200 rounded">
+            <p className="text-xs text-yellow-800">
               💡 <strong>유니콘 달성 시점:</strong> {formatDate(selectedCompany.unicornDate)}
             </p>
           </div>

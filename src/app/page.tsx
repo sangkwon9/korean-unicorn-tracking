@@ -8,7 +8,7 @@ export default function Home() {
     <div className="min-h-screen bg-gray-100">
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 py-6">
+        <div className="w-full px-2 py-4">
           <h1 className="text-3xl font-bold text-gray-900 text-center">
             🦄 Korean Unicorn Tracking Dashboard
           </h1>
@@ -19,15 +19,15 @@ export default function Home() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-[calc(100vh-200px)]">
+      <main className="w-full px-1 py-2">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 h-[calc(100vh-120px)]">
           {/* Left Panel - Unicorn Companies Table */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+          <div className="bg-white rounded shadow-sm border border-gray-200 overflow-hidden">
             <UnicornTable companies={koreanUnicornCompanies} />
           </div>
 
           {/* Right Panel - HR Articles */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+          <div className="bg-white rounded shadow-sm border border-gray-200 overflow-hidden">
             <HRArticles articles={hrArticles} />
           </div>
         </div>
