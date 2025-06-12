@@ -1,5 +1,6 @@
 export interface UnicornCompany {
   name: string;
+  foundedYear: number;
   unicornDate: string;
   currentEmployees: number;
   employeeHistory: {
