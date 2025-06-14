@@ -28,7 +28,7 @@ export default function UnicornTable({ companies }: UnicornTableProps) {
         {/* 기업 카드 그리드 */}
         <div className="grid grid-cols-2 gap-4 mb-4">
           {companies.map((company, index) => (
-            <div key={index}>
+            <div key={index} className="w-full">
               <div
                 className={`p-3 border rounded cursor-pointer transition-all duration-200 h-full ${
                   selectedCompany === company
@@ -37,15 +37,15 @@ export default function UnicornTable({ companies }: UnicornTableProps) {
                 }`}
                 onClick={() => setSelectedCompany(selectedCompany === company ? null : company)}
               >
-                <div className="flex justify-between items-center">
-                  <div>
+                <div className="flex justify-between items-start">
+                  <div className="flex-1">
                     <h3 className="font-semibold text-base text-gray-800">{company.name}</h3>
-                    <p className="text-xs text-gray-600">{company.description}</p>
+                    <p className="text-xs text-gray-600 mt-1">{company.description}</p>
                     <p className="text-xs text-gray-500 mt-1">
                       유니콘 달성: {formatDate(company.unicornDate)} | 현재 인원: {formatNumber(company.currentEmployees)}명
                     </p>
                   </div>
-                  <div className="text-xl text-gray-400">
+                  <div className="text-xl text-gray-400 ml-2">
                     {selectedCompany === company ? '−' : '+'}
                   </div>
                 </div>
