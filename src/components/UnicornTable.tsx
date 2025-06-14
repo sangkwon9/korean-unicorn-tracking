@@ -25,13 +25,12 @@ export default function UnicornTable({ companies }: UnicornTableProps) {
       
       {/* 기업 목록 */}
       <div className="mb-3">
-        {companies.map((company, index) => (
-          <div key={index} className="mb-4">
-            {/* 기업 카드 컨테이너 */}
-            <div className="flex flex-col">
-              {/* 기업 카드 */}
+        {/* 기업 카드 그리드 */}
+        <div className="grid grid-cols-2 gap-4 mb-4">
+          {companies.map((company, index) => (
+            <div key={index}>
               <div
-                className={`p-3 border rounded cursor-pointer transition-all duration-200 ${
+                className={`p-3 border rounded cursor-pointer transition-all duration-200 h-full ${
                   selectedCompany === company
                     ? 'border-blue-500 bg-blue-50'
                     : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
@@ -51,65 +50,65 @@ export default function UnicornTable({ companies }: UnicornTableProps) {
                   </div>
                 </div>
               </div>
-              
-              {/* 상세 정보 */}
-              {selectedCompany === company && (
-                <div className="mt-2 p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
-                  <h3 className="text-lg font-semibold mb-3 text-gray-800">
-                    {company.name} - 연도별 인력 변화
-                  </h3>
-                  <div className="overflow-x-auto">
-                    <table className="w-full border-collapse text-sm">
-                      <thead>
-                        <tr className="bg-gray-50">
-                          <th className="border border-gray-200 px-2 py-2 text-left font-semibold text-gray-700">연도</th>
-                          <th className="border border-gray-200 px-2 py-2 text-left font-semibold text-gray-700">직원 수</th>
-                          <th className="border border-gray-200 px-2 py-2 text-left font-semibold text-gray-700">증가율</th>
-                          <th className="border border-gray-200 px-2 py-2 text-left font-semibold text-gray-700">출처</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {company.employeeHistory.map((record, idx) => {
-                          const prevRecord = company.employeeHistory[idx - 1];
-                          const growthRate = prevRecord
-                            ? ((record.employees - prevRecord.employees) / prevRecord.employees * 100).toFixed(1)
-                            : null;
-                          return (
-                            <tr key={record.year} className="hover:bg-gray-50">
-                              <td className="border border-gray-200 px-2 py-2 font-medium text-gray-800">
-                                {record.year}년
-                              </td>
-                              <td className="border border-gray-200 px-2 py-2 text-gray-700">
-                                {formatNumber(record.employees)}명
-                              </td>
-                              <td className="border border-gray-200 px-2 py-2">
-                                {growthRate ? (
-                                  <span className={`font-medium ${parseFloat(growthRate) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                    {parseFloat(growthRate) >= 0 ? '+' : ''}{growthRate}%
-                                  </span>
-                                ) : (
-                                  <span className="text-gray-400">-</span>
-                                )}
-                              </td>
-                              <td className="border border-gray-200 px-2 py-2 text-xs text-gray-600">
-                                {record.source}
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  </div>
-                  <div className="mt-3 p-2 bg-yellow-50 border border-yellow-200 rounded">
-                    <p className="text-xs text-yellow-800">
-                      💡 <strong>유니콘 달성 시점:</strong> {formatDate(company.unicornDate)}
-                    </p>
-                  </div>
-                </div>
-              )}
+            </div>
+          ))}
+        </div>
+
+        {/* 상세 정보 */}
+        {selectedCompany && (
+          <div className="mt-4 p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
+            <h3 className="text-lg font-semibold mb-3 text-gray-800">
+              {selectedCompany.name} - 연도별 인력 변화
+            </h3>
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse text-sm">
+                <thead>
+                  <tr className="bg-gray-50">
+                    <th className="border border-gray-200 px-2 py-2 text-left font-semibold text-gray-700">연도</th>
+                    <th className="border border-gray-200 px-2 py-2 text-left font-semibold text-gray-700">직원 수</th>
+                    <th className="border border-gray-200 px-2 py-2 text-left font-semibold text-gray-700">증가율</th>
+                    <th className="border border-gray-200 px-2 py-2 text-left font-semibold text-gray-700">출처</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {selectedCompany.employeeHistory.map((record, idx) => {
+                    const prevRecord = selectedCompany.employeeHistory[idx - 1];
+                    const growthRate = prevRecord
+                      ? ((record.employees - prevRecord.employees) / prevRecord.employees * 100).toFixed(1)
+                      : null;
+                    return (
+                      <tr key={record.year} className="hover:bg-gray-50">
+                        <td className="border border-gray-200 px-2 py-2 font-medium text-gray-800">
+                          {record.year}년
+                        </td>
+                        <td className="border border-gray-200 px-2 py-2 text-gray-700">
+                          {formatNumber(record.employees)}명
+                        </td>
+                        <td className="border border-gray-200 px-2 py-2">
+                          {growthRate ? (
+                            <span className={`font-medium ${parseFloat(growthRate) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                              {parseFloat(growthRate) >= 0 ? '+' : ''}{growthRate}%
+                            </span>
+                          ) : (
+                            <span className="text-gray-400">-</span>
+                          )}
+                        </td>
+                        <td className="border border-gray-200 px-2 py-2 text-xs text-gray-600">
+                          {record.source}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+            <div className="mt-3 p-2 bg-yellow-50 border border-yellow-200 rounded">
+              <p className="text-xs text-yellow-800">
+                💡 <strong>유니콘 달성 시점:</strong> {formatDate(selectedCompany.unicornDate)}
+              </p>
             </div>
           </div>
-        ))}
+        )}
       </div>
     </div>
   );
