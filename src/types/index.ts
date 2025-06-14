@@ -18,4 +18,13 @@ export interface HRArticle {
   publishedDate: string;
   summary: string;
   relevanceScore: number;
+}
+
+export interface Insight {
+  title: string;
+  source: string;
+  date: string;
+  relevance: number;
+  summary: string;
+  url: string;
 } 
